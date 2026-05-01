@@ -8,10 +8,19 @@ export function AddBirthdayForm({ onAdd, editingId, editForm, onEdit, onCancelEd
     const [form, setForm] = useState({ name: '', date: '', email: '' });
     const [isEditing, setIsEditing] = useState(false);
 
+    const isValidDate = (dateStr) => {
+        if (!/^\d{2}-\d{2}$/.test(dateStr)) return false;
+        const [month, day] = dateStr.split('-').map(Number);
+        return month >= 1 && month <= 12 && day >= 1 && day <= 31;
+
+    }
     const handleDateChange = (e) => {
         let value = e.target.value;
         // Remove any characters that are not digits or hyphen
         value = value.replace(/[^0-9-]/g, '');
+
+        const parts = value.split('-');
+        if (parts.length > 2) return;
         // Auto-add hyphen after MM
         if (value.length === 2 && !value.includes('-') && form.date.length === 1) {
             value += '-';
@@ -34,6 +43,10 @@ export function AddBirthdayForm({ onAdd, editingId, editForm, onEdit, onCancelEd
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!isValidDate(form.date)) {
+            alert("Invalid date. Please use a real MM-DD date like 04-29.");
+        }
         try {
             if (isEditing && editingId) {
                 await onEdit(editingId, form);

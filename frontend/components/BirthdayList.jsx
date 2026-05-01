@@ -33,7 +33,7 @@ export function BirthdayList({ birthdays, onDelete, onEdit, editingId }) {
                             variant="ghost"
                             size="icon"
                             onClick={() => onEdit(birthday)}
-                            className="text-white/20 hover:text-cyan hover:bg-transparent transition-all opacity-0 group-hover:opacity-100 flex-shrink-0"
+                            className="text-white/20 hover:text-cyan hover:bg-transparent transition-all opacity-0 group-hover:opacity-100 opacity-100 flex-shrink-0"
                         >
                             <Edit2 className="h-5 sm:h-6 w-5 sm:w-6" />
                         </Button>
@@ -41,7 +41,7 @@ export function BirthdayList({ birthdays, onDelete, onEdit, editingId }) {
                             variant="ghost"
                             size="icon"
                             onClick={() => onDelete(birthday.id)}
-                            className="text-white/20 hover:text-red-500 hover:bg-transparent transition-all opacity-0 group-hover:opacity-100 flex-shrink-0"
+                            className="text-white/20 hover:text-red-500 hover:bg-transparent transition-all opacity-0 group-hover:opacity-100 opacity-100 flex-shrink-0"
                         >
                             <Trash2 className="h-5 sm:h-6 w-5 sm:w-6" />
                         </Button>
