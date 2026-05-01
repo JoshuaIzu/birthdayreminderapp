@@ -46,6 +46,7 @@ export function AddBirthdayForm({ onAdd, editingId, editForm, onEdit, onCancelEd
 
         if (!isValidDate(form.date)) {
             alert("Invalid date. Please use a real MM-DD date like 04-29.");
+            return
         }
         try {
             if (isEditing && editingId) {

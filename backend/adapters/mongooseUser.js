@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { IUser } from '../ports/IUser.js';
 import { User } from '../core/User.js';
-
+import { isValidBirthdayDate } from '../core/validation.js';
 const userSchema = new mongoose.Schema(
     {
         name: { type: String, required: true },
@@ -14,6 +14,14 @@ const userSchema = new mongoose.Schema(
 
 const UserModel = mongoose.model('Usermodel', userSchema);
 
+
+const assertValidBirthday = (dateStr) => {
+if (!isValidBirthdayDate(dateStr)) {
+    throw new Error(
+        'Invalid birthday date. Please provide a valid date in the format MM-DD.'
+    )
+}
+}
 const toDomainUser = (doc) =>
     new User({
         id: doc._id?.toString(),
@@ -39,13 +47,17 @@ export class MongooseUser extends IUser {
     }
 
     async createUser(userData) {
+        assertValidBirthday(userData?.date);
         const created = await UserModel.create(userData);
         return toDomainUser(created);
     }
 
     async updateUser(id, updateData) {
+        if (Object.prototype.hasOwnProperty.call(updateData, 'date')) {
+            assertValidBirthday(updateData.date);
+        }
         const updated = await UserModel.findByIdAndUpdate(id, updateData, {
-            new: true,
+            returnDocument: 'after',
             runValidators: true
         }).lean();
 
@@ -57,3 +69,4 @@ export class MongooseUser extends IUser {
         return deleted ? toDomainUser(deleted) : null;
     }
 }
+

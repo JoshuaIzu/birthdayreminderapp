@@ -1,15 +1,18 @@
+import { isValidBirthdayDate } from "./validation.js";
+
+
 const getAllBirthdaysUseCase = async (userRepository) => {
     return await userRepository.getAllUsers();
 };
+
 
 const addBirthdayUseCase = async (userRepository, userData) => {
     if (!userData.name || !userData.date) {
         throw new Error("Name and date are required to add a birthday.");
     }
     
-    const datePattern = /^\d{2}-\d{2}$/;
-    if (!datePattern.test(userData.date)) {
-        throw new Error("Date must be in MM-DD format.");
+    if(!isValidBirthdayDate(userData.date)) {
+        throw new Error("Invalid date format. Please use MM-DD format.");
     }
 
     return await userRepository.createUser(userData);
@@ -21,12 +24,9 @@ const updateBirthdayUseCase = async (userRepository, id, updateData) => {
     }
     
 
-    if (updateData.date) {
-        const datePattern = /^\d{2}-\d{2}$/;
-        if (!datePattern.test(updateData.date)) {
-            throw new Error("Date must be in MM-DD format.");
-        }
-    }
+   if (updateData.date && !isValidBirthdayDate(updateData.date)) {
+       throw new Error("Invalid date format. Please use MM-DD format.");
+   }
 
     return await userRepository.updateUser(id, updateData);
 };

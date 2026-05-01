@@ -8,10 +8,6 @@ const processBirthdays = async ( userRepository, notificationService, targetDate
         return { processed: 0 };
     }
 
-    const validBirthdays = users.filter((user) =>
-        user.isBirthdayToday(month, day)
-    );
-
     const notifyPromises = validBirthdays.map((user) =>
         notificationService.sendBirthdayGreeting(user)
     );
