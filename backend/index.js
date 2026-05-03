@@ -28,14 +28,14 @@ const startApp = async () => {
         const mailAccountOne = new EmailNotificationAdapter({
             host: process.env.SMTP_HOST_1,
             port: parseInt(process.env.SMTP_PORT_1, 10),
-            secure: false,
+            secure: true,
             auth: { user: process.env.SMTP_USER_1, pass: process.env.SMTP_PASS_1 }
         });
 
         const mailAccountTwo = new EmailNotificationAdapter({
             host: process.env.SMTP_HOST_2,
             port: parseInt(process.env.SMTP_PORT_2, 10),
-            secure: false,
+            secure: true,
             auth: { user: process.env.SMTP_USER_2, pass: process.env.SMTP_PASS_2 }
         });
 

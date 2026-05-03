@@ -6,3 +6,6 @@ dist/
 DEPLOY.md
 .idea
 node_modules
+send-happy.js
+send-happy.js.bak
+send-happy.out.txt

@@ -1,3 +1,4 @@
+import React from 'react';
 import { Html, Body, Container, Heading, Text } from '@react-email/components';
 
 export default function BirthdayEmail({ name }) {
