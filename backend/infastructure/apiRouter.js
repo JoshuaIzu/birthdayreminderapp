@@ -29,7 +29,17 @@ const createApiRouter = (userRepository) => {
         }
     });
 
-    router.put('/:id', async (req, res) => {
+    const requireAdminPassword =(req, res, next) => {
+        const expected = process.env.ADMIN_PASSWORD;
+        const provided = req.get('x-admin-password');
+
+        if(!expected) return res.status(401).json({ error: 'Admin password not configured'});
+        if(!provided || provided !== expected) return res.status(403).json({ error: 'Forbidden.'});
+        next();
+    };
+
+
+    router.put('/:id', requireAdminPassword,async (req, res) => {
         try {
             const updatedUser = await updateBirthdayUseCase(userRepository, req.params.id, req.body);
 
@@ -44,7 +54,7 @@ const createApiRouter = (userRepository) => {
         }
     });
 
-    router.delete('/:id', async (req, res) => {
+    router.delete('/:id', requireAdminPassword,async (req, res) => {
         try {
             const deletedUser = await deleteBirthdayUseCase(userRepository, req.params.id);
 

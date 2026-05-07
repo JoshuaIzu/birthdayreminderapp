@@ -2,7 +2,6 @@ import schedule from 'node-schedule';
 import { processBirthdays } from '../core/processBirthday.js';
 
 const initScheduler = (userRepository, notificationService) => {
-
     const tz = process.env.TZ || 'Africa/Lagos';
     console.log(`[System] Initializing daily birthday cron job (Scheduled for 07:00 AM ${tz})...`);
 
@@ -11,7 +10,9 @@ const initScheduler = (userRepository, notificationService) => {
     rule.minute = 0;
     rule.tz = tz;
 
-    const job = schedule.scheduleJob(rule, async () => {
+
+
+    return schedule.scheduleJob(rule, async () => {
         console.log('\n[Cron] Triggering daily birthday check...');
         
         try {
@@ -21,8 +22,6 @@ const initScheduler = (userRepository, notificationService) => {
             console.error('[Cron] Job failed during execution:', error);
         }
     });
-
-    return job;
 };
 
 export { initScheduler };

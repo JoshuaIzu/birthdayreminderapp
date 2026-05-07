@@ -23,18 +23,22 @@ const birthdayService = {
         return res.json();
     },
 
-    async remove(id) {
-        const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+    async remove(id, adminPassword) {
+        const headers = {};
+        if (adminPassword) headers['x-admin-password'] = adminPassword;
+        const res = await fetch(`${API_URL}/${id}`, { method: 'DELETE', headers });
         if (!res.ok) {
             const error = await res.json().catch(() => ({ error: 'Failed to delete birthday' }));
             throw new Error(error.error || 'Failed to delete birthday');
         }
     },
 
-    async update(id, userData) {
+    async update(id, userData, adminPassword) {
+        const headers = {'Content-Type': 'application/json'};
+        if (adminPassword) headers['x-admin-password'] = adminPassword;
         const res = await fetch(`${API_URL}/${id}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
+            headers,
             body: JSON.stringify(userData),
         });
         if (!res.ok) {

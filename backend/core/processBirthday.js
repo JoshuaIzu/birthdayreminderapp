@@ -3,18 +3,19 @@ const processBirthdays = async ( userRepository, notificationService, targetDate
     const day = targetDate.getDate();
 
     const users = await userRepository.getUsersWithBirthday(month, day);
-
     if (!users || users.length === 0) {
         return { processed: 0 };
     }
 
-    const notifyPromises = validBirthdays.map((user) =>
+    const validUsers = users.filter((user) => user.isBirthdayToday(month, day) && user.email );
+
+    const notifyPromises = validUsers.map((user) =>
         notificationService.sendBirthdayGreeting(user)
     );
 
     await Promise.allSettled(notifyPromises);
 
-    return { processed: validBirthdays.length };
+    return { processed:validUsers.length };
 };
 
 export { processBirthdays };
